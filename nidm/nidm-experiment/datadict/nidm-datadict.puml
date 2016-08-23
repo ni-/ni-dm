@@ -1,0 +1,61 @@
+@startuml
+
+class DataStructure_Demographics << (C, yellow) >> {
+    rdf:type = skos:ConceptScheme
+    skos:prefLabel = "Demographics"
+    skos:notation = "demographics"
+    skos:note = "A REDCap demographics form."
+    nidm:platform = nidm:redcap
+}
+
+class MeasurementDataElement_Age << (E, cyan) >> {
+    rdf:type = qb:MeasureProperty, rdf:Property
+    qb:concept = nidm:Age
+    skos:prefLabel = "Visit Age"
+    skos:notation = "visit_age"
+    skos:note = "Data element for visit age."
+}
+
+class CodedDataElement_Sex << (E, cyan) >> {
+    rdf:type = qb:MeasureProperty, qb:CodedProperty, rdf:Property
+    rdfs:range = nidm:Sex
+    qb:concept = nidm:Sex
+    skos:prefLabel = "Sex"
+    skos:notation = "sex"
+    skos:note = "Data element for sex."
+}
+
+class CodeList_Sex << (E, cyan) >> {
+    rdf:type = nidm:CodeList, skos:ConceptScheme
+    skos:prefLabel = "Code list for Sex"
+    skos:notation = "codelist_sex"
+    skos:note = "Code list for participant sex."
+}
+
+class Code_Female << (E, cyan) >> {
+    rdf:type = nidm:Sex, nidm:Code, skos:Concept
+    skos:topConceptOf = CodeList_Sex
+    skos:inScheme = CodeList_Sex
+    skos:prefLabel = "Female"
+    skos:notation = "F"
+}
+
+class Code_Male << (E, cyan) >> {
+    rdf:type = nidm:Sex, nidm:Code, skos:Concept
+    skos:topConceptOf = CodeList_Sex
+    skos:inScheme = CodeList_Sex
+    skos:prefLabel = "Male"
+    skos:notation = "M"
+}
+
+DataStructure_Demographics --|> MeasurementDataElement_Age : hadMember
+
+DataStructure_Demographics --|> CodedDataElement_Sex : hadMember
+
+CodedDataElement_Sex --|> CodeList_Sex  : qb:codeList
+
+Code_Female -|> CodeList_Sex  : skos:inScheme
+
+CodeList_Sex <|- Code_Male : skos:inScheme
+
+@enduml
